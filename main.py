@@ -5,10 +5,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
-import undetected_chromedriver as uc
+
 
 options = webdriver.ChromeOptions()
-driver = uc.Chrome(options=options)
+driver = webdriver.Chrome()
 driver.get(url="https://develop.icrm.liss.pro/#login")
 time.sleep(3)
 driver.find_element(By.XPATH, "//*[@id=\"login_email\"]").clear()
