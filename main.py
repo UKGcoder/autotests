@@ -6,7 +6,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 import undetected_chromedriver as uc
-
+##
 options = webdriver.ChromeOptions()
 driver = uc.Chrome(options=options, driver_executable_path="/var/jenkins_home/chrome_driver/chromedriver")
 driver.get(url="https://develop.icrm.liss.pro/#login")
