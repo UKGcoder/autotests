@@ -37,5 +37,3 @@ def test_login(test_setup):
     assert "app" in driver.current_url
 
 
-if "main":
-    test_login(test_setup)
