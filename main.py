@@ -21,6 +21,7 @@ def test_setup():
     options.add_argument('disable-infobars')
     options.add_argument("--disable-extensions")
     driver = webdriver.Chrome(service=s, options=options)
+    #driver = uc.Chrome(options=options)
     driver.get(url="https://develop.icrm.liss.pro/#login")
     yield
     driver.quit()
@@ -34,6 +35,7 @@ def test_login(test_setup):
     time.sleep(3)
     driver.find_element(By.XPATH,
                         "//*[@id=\"page-login\"]/div/main/div[2]/div/section[1]/div/form/div[2]/button").click()
+    time.sleep(3)
     assert "app" in driver.current_url
 
 
