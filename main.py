@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 
 
 options = webdriver.ChromeOptions()
-driver = webdriver.Chrome()
+driver = webdriver.Chrome(executable_path="chromedriver")
 driver.get(url="https://develop.icrm.liss.pro/#login")
 time.sleep(3)
 driver.find_element(By.XPATH, "//*[@id=\"login_email\"]").clear()
