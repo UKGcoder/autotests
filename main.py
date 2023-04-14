@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 import undetected_chromedriver as uc
 
 options = webdriver.ChromeOptions()
-driver = uc.Chrome(options=options)
+driver = uc.Chrome(options=options, driver_executable_path="/var/jenkins_home/chrome_driver/chromedriver")
 driver.get(url="https://develop.icrm.liss.pro/#login")
 time.sleep(3)
 driver.find_element(By.XPATH, "//*[@id=\"login_email\"]").clear()
