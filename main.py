@@ -10,7 +10,7 @@ from selenium.webdriver.chrome.service import Service
 
 s = Service(executable_path="/var/jenkins_home/chromedriver")
 options = webdriver.ChromeOptions()
-options.headless = True
+options.add_argument('--headless')
 driver = webdriver.Chrome(service=s, options=options)
 driver.get(url="https://develop.icrm.liss.pro/#login")
 time.sleep(3)
