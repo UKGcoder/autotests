@@ -7,8 +7,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 import undetected_chromedriver as uc
 ##
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+
 options = webdriver.ChromeOptions()
-driver = webdriver.Chrome(executable_path="/var/jenkins_home/driver/chromedriver")
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 driver.get(url="https://develop.icrm.liss.pro/#login")
 time.sleep(3)
 driver.find_element(By.XPATH, "//*[@id=\"login_email\"]").clear()
