@@ -44,6 +44,6 @@ def test_login(test_setup):
         EC.url_contains("app"))
     assert "app" in driver.current_url
     timeDelta = datetime.now() - start_time
-    print("Время, потребовавшееся на выполнение данного процесса: " + str(timeDelta.seconds))
+    print("Время, потребовавшееся на выполнение данного процесса: " + str(timeDelta.seconds) + "s")
 
 
