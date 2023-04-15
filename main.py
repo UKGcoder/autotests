@@ -16,13 +16,13 @@ def test_setup():
     global driver
     s = Service(executable_path="/var/jenkins_home/chromedriver")
     options = webdriver.ChromeOptions()
-    #options.add_argument('--headless')
-    #options.add_argument('--no-sandbox')  # # Bypass OS security model
-    #options.add_argument('start-maximized')
-    #options.add_argument('disable-infobars')
-    #options.add_argument("--disable-extensions")
-    #driver = webdriver.Chrome(service=s, options=options)
-    driver = uc.Chrome(options=options)
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')  # # Bypass OS security model
+    options.add_argument('start-maximized')
+    options.add_argument('disable-infobars')
+    options.add_argument("--disable-extensions")
+    driver = webdriver.Chrome(service=s, options=options)
+    #driver = uc.Chrome(options=options)
     driver.get(url="https://develop.icrm.liss.pro/#login")
     yield
     driver.quit()
