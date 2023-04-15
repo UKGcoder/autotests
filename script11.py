@@ -42,7 +42,9 @@ def test_new_deal_creator(test_setup):
                         "//*[@id=\"page-login\"]/div/main/div[2]/div/section[1]/div/form/div[2]/button").click()
     assert WebDriverWait(driver, 10).until(
         EC.url_contains("app"))
-
+    WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="page-Workspaces"]/div[2]/div[2]/div/div[3]/div[1]/div[1]/div/div[1]/a[4]')))
     driver.find_element(By.XPATH,
                         '//*[@id="page-Workspaces"]/div[2]/div[2]/div/div[3]/div[1]/div[1]/div/div[1]/a[4]').click()
     assert WebDriverWait(driver, 10).until(EC.url_contains("https://develop.icrm.liss.pro/app/%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%D1%81%D0%BE-%D1%81%D0%B4%D0%B5%D0%BB%D0%BA%D0%B0%D0%BC%D0%B8"))
