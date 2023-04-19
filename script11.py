@@ -52,6 +52,7 @@ def test_new_deal_creator(test_setup):
             msg='Тест завершился с ошибкой. Не загрузилась страница https://develop.icrm.liss.pro/app',
             pytrace=False)
         return
+    driver.refresh()
     getClick('//*[@id="page-Workspaces"]/div[2]/div[2]/div/div[3]/div[1]/div[1]/div/div[1]/a[4]')
     try:
         assert WebDriverWait(driver, 10).until(EC.url_contains(
