@@ -12,9 +12,7 @@ from datetime import datetime
 
 
 def getClick(XPATH):
-    WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable(
-            (By.XPATH, XPATH)))
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, XPATH)))
     driver.find_element(By.XPATH, XPATH).click()
 
 
@@ -65,8 +63,9 @@ def test_new_deal_creator(test_setup):
     except:
         pytest.fail(msg='Тест завершился с ошибкой. Не загрузилась страница https://develop.icrm.liss.pro/app/работа-со-сделками',
                     pytrace=False)
-    getClick(
-        '//*[@id="page-Workspaces"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[3]/div[3]/div[2]/div[1]/div[2]/a[1]/span[2]')
+    driver.get("https://develop.icrm.liss.pro/app/icrm-deal")
+    #getClick(
+    #   '//*[@id="page-Workspaces"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[3]/div[3]/div[2]/div[1]/div[2]/a[1]/span[2]')
 
     assert WebDriverWait(driver, 10).until(EC.url_contains("icrm-deal"))
 
