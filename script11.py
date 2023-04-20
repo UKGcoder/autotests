@@ -29,7 +29,7 @@ def test_setup():
     options.add_argument('disable-infobars')
     options.add_argument("--disable-extensions")
     driver = webdriver.Chrome(service=s, options=options)
-    # driver = uc.Chrome(options=options)
+    #driver = uc.Chrome(options=options)
     driver.get(url="https://develop.icrm.liss.pro/#login")
     yield
     driver.quit()
@@ -52,9 +52,14 @@ def test_new_deal_creator(test_setup):
             msg='Тест завершился с ошибкой. Не загрузилась страница https://develop.icrm.liss.pro/app',
             pytrace=False)
         return
+    try:
+        driver.find_element(By.XPATH, "/html/body/div[5]/div/div/div[1]/div[2]/button[2]").click()
+        #/html/body/div[5]/div/div/div[1]/div[2]/button[2]
+    except:
+        pass
     #driver.refresh()
-    #getClick('//*[@id="page-Workspaces"]/div[2]/div[2]/div/div[3]/div[1]/div[1]/div/div[1]/a[4]')
-    driver.get("https://develop.icrm.liss.pro/app/%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%D1%81%D0%BE-%D1%81%D0%B4%D0%B5%D0%BB%D0%BA%D0%B0%D0%BC%D0%B8")
+    getClick('//*[@id="page-Workspaces"]/div[2]/div[2]/div/div[3]/div[1]/div[1]/div/div[1]/a[4]')
+    #driver.get("https://develop.icrm.liss.pro/app/%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%D1%81%D0%BE-%D1%81%D0%B4%D0%B5%D0%BB%D0%BA%D0%B0%D0%BC%D0%B8")
     try:
         assert WebDriverWait(driver, 10).until(EC.url_contains(
             "https://develop.icrm.liss.pro/app/%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%D1%81%D0%BE-%D1%81%D0%B4%D0%B5%D0%BB%D0%BA%D0%B0%D0%BC%D0%B8"))
@@ -80,14 +85,15 @@ def test_new_deal_creator(test_setup):
         By.XPATH, '//*[@id="page-iCRM Deal"]/div[1]/div/div/div[2]/div[3]/button[2]')))
     driver.find_element(By.XPATH,
                         '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[3]/div[2]/div/div[1]/form/div[1]/div/div[2]/div[1]/input').send_keys(
-        "15-04-2023")
+        "15-04-2023\n")
     driver.find_element(By.XPATH,
                         '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[3]/div[2]/div/div[1]/form/div[2]/div/div[2]/div[1]/div/div/input').send_keys(
-        "Тестовый пользователь")
+        "Тестовый пользователь\n")
     driver.find_element(By.XPATH,
                         '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[3]/div[2]/div/div[2]/form/div[1]/div/div[2]/div[1]/div/div/input').send_keys(
-        'ООО "ОСТ"')
-
+        'ООО "ОСТ"\n')
+    timeDelta = datetime.now() - start_time
+    time.sleep(2)
     driver.find_element(By.XPATH, '//*[@id="page-iCRM Deal"]/div[1]/div/div/div[2]/div[3]/button[2]').click()
     try:
         assert WebDriverWait(driver, 10).until(EC.presence_of_element_located(
@@ -96,6 +102,4 @@ def test_new_deal_creator(test_setup):
         # TimeoutException(stacktrace=None, screen=None)
         pytest.fail(msg="Assertionerror: Тест завершился с ошибкой. Не удалось создать сделку с ведёнными данными",
                     pytrace=False)
-
-    timeDelta = datetime.now() - start_time
     print("Время, потребовавшееся на выполнение данного процесса: " + str(timeDelta))
