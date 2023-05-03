@@ -63,10 +63,11 @@ def get_deal(driver):
     driver.get(
         url="https://develop.icrm.liss.pro/app/icrm-deal/%D0%90%D0%9E%20%22%D0%93%D0%B0%D0%B7%D0%BF%D1%80%D0%BE%D0%BC%D0%BD%D0%B5%D1%84%D1%82%D1%8C-%D0%9D%D0%9D%D0%93%22%200140")
     try:
-       WebDriverWait(driver, 3).until(EC.alert_is_present())
-       driver.switch_to.alert.accept()
+        WebDriverWait(driver, 3).until(EC.alert_is_present())
+        driver.switch_to.alert.accept()
     except:
-       print('aaaaaaaaa')
+        print('aaaaaaaaa')
+
 
 def checkLock(driver):
     get_deal(driver)
@@ -77,25 +78,24 @@ def checkLock(driver):
                                                                    '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[2]/div[5]/div[2]/div/div/div[1]/div[1]/div[2]/button')))
     driver.find_element(By.XPATH,
                         '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[2]/div[5]/div[2]/div/div/div[1]/div[1]/div[2]/button').click()
-    WebDriverWait(driver, 5).until(EC.presence_of_element_located(
+    assert WebDriverWait(driver, 5).until(EC.presence_of_element_located(
         (By.XPATH, '//*[@id="page-iCRM Invoice"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[1]')))
 
     get_deal(driver)
     WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH,
-                                                                   '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[2]/div[5]/div[2]/div/div/div[1]/div[2]/div[2]/button')))
+                                                               '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[2]/div[5]/div[2]/div/div/div[1]/div[2]/div[2]/button')))
     driver.find_element(By.XPATH,
                         '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[2]/div[5]/div[2]/div/div/div[1]/div[2]/div[2]/button').click()
-    WebDriverWait(driver, 5).until(EC.presence_of_element_located(
+    assert WebDriverWait(driver, 5).until(EC.presence_of_element_located(
         (By.XPATH, '//*[@id="page-iCRM Task"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[1]')))
 
     get_deal(driver)
     WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH,
-                                                                   '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[2]/div[5]/div[2]/div/div/div[1]/div[3]/div[2]/button')))
+                                                               '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[2]/div[5]/div[2]/div/div/div[1]/div[3]/div[2]/button')))
     driver.find_element(By.XPATH,
                         '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[2]/div[5]/div[2]/div/div/div[1]/div[3]/div[2]/button').click()
-    WebDriverWait(driver, 5).until(EC.presence_of_element_located(
+    assert WebDriverWait(driver, 5).until(EC.presence_of_element_located(
         (By.XPATH, '//*[@id="page-iCRM Done Job Act"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[1]')))
-
 
 
 @pytest.fixture()
@@ -116,17 +116,20 @@ def test_login(test_setup):
     login(username="secondtest@test.com", password="Khhkauds7gka8g3qo21", driver=driver1)
     lock_deal(driver=driver2)
     try:
-      checkLock(driver=driver1)
+        checkLock(driver=driver1)
     except:
         pytest.fail(msg="Тест завершился с ошибкой. Блокировка не сработала",
                     pytrace=False)
-    time.sleep(90)
+    time.sleep(180)
+    get_deal(driver1)
+    passed = True
     try:
-        get_deal(driver1)
         WebDriverWait(driver1, 10).until(EC.presence_of_element_located((By.XPATH,
                                                                          '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[1]/div[1]')))
         checkLock(driver=driver1)
-        pytest.fail(msg="Тест завершился с ошибкой. Разблокировка не сработала",
-                    pytrace=False)
+        passed = False
     except:
         pass
+    if not passed:
+        pytest.fail(reason="Тест завершился с ошибкой. Разблокировка не сработала",
+                    pytrace=False)

@@ -126,12 +126,15 @@ def test_login(test_setup):
         EC.element_to_be_clickable((By.XPATH, '//*[@id="page-iCRM Deal"]/div[1]/div/div/div[2]/div[3]/button[2]')))
     driver2.find_element(By.XPATH, '//*[@id="page-iCRM Deal"]/div[1]/div/div/div[2]/div[3]/button[2]').click()
     time.sleep(2)
+    get_deal(driver1)
+    passed = True
     try:
-        get_deal(driver1)
         WebDriverWait(driver1, 10).until(EC.presence_of_element_located((By.XPATH,
                                                                          '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[1]/div[1]')))
         checkLock(driver=driver1)
-        pytest.fail(msg="Тест завершился с ошибкой. Разблокировка не сработала",
-                    pytrace=False)
+        passed = False
     except:
         pass
+    if not passed:
+        pytest.fail(reason="Тест завершился с ошибкой. Разблокировка не сработала",
+                    pytrace=False)
