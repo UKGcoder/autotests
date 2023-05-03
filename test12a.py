@@ -121,7 +121,7 @@ def test_login(test_setup):
     except:
         pytest.fail(msg="Тест завершился с ошибкой. Блокировка не сработала",
                     pytrace=False)
-    time.sleep(180)
+    time.sleep(200)
     get_deal(driver1)
     passed = True
     try:
