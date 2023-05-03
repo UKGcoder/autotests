@@ -75,6 +75,7 @@ def test_new_deal_creator(test_setup):
     except:
         pytest.fail(msg='Тест завершился с ошибкой. Не работает кнопка "создать сделку"',
                     pytrace=False)
+        exit(0)
 
     WebDriverWait(driver, 10).until(EC.presence_of_element_located(
         (By.XPATH,
