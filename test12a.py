@@ -11,7 +11,7 @@ import undetected_chromedriver as uc
 from selenium.webdriver.chrome.service import Service
 from datetime import datetime
 
-Server = True
+Server = False
 
 
 def getDriver(isServer):
