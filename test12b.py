@@ -24,6 +24,7 @@ def getDriver(isServer):
         options.add_argument('--no-sandbox')  # # Bypass OS security model
         options.add_argument('start-maximized')
         options.add_argument("--disable-extensions")
+        options.add_argument('--disable-dev-shm-usage')
         driver = webdriver.Chrome(service=s, options=options)
     else:
         driver = uc.Chrome(options=options)
@@ -41,7 +42,7 @@ def login(username, password, driver):
     # time.sleep(3)
     driver.find_element(By.XPATH,
                         "//*[@id=\"page-login\"]/div/main/div[2]/div/section[1]/div/form/div[2]/button").click()
-    WebDriverWait(driver, 10).until(
+    assert WebDriverWait(driver, 10).until(
         EC.url_contains("app"))
 
 
@@ -78,7 +79,7 @@ def checkLock(driver):
                                                                    '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[2]/div[5]/div[2]/div/div/div[1]/div[1]/div[2]/button')))
     driver.find_element(By.XPATH,
                         '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[2]/div[5]/div[2]/div/div/div[1]/div[1]/div[2]/button').click()
-    WebDriverWait(driver, 5).until(EC.presence_of_element_located(
+    assert WebDriverWait(driver, 5).until(EC.presence_of_element_located(
         (By.XPATH, '//*[@id="page-iCRM Invoice"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[1]')))
 
     get_deal(driver)
@@ -86,7 +87,7 @@ def checkLock(driver):
                                                                '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[2]/div[5]/div[2]/div/div/div[1]/div[2]/div[2]/button')))
     driver.find_element(By.XPATH,
                         '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[2]/div[5]/div[2]/div/div/div[1]/div[2]/div[2]/button').click()
-    WebDriverWait(driver, 5).until(EC.presence_of_element_located(
+    assert WebDriverWait(driver, 5).until(EC.presence_of_element_located(
         (By.XPATH, '//*[@id="page-iCRM Task"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[1]')))
 
     get_deal(driver)
@@ -94,7 +95,7 @@ def checkLock(driver):
                                                                '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[2]/div[5]/div[2]/div/div/div[1]/div[3]/div[2]/button')))
     driver.find_element(By.XPATH,
                         '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[2]/div[5]/div[2]/div/div/div[1]/div[3]/div[2]/button').click()
-    WebDriverWait(driver, 5).until(EC.presence_of_element_located(
+    assert WebDriverWait(driver, 5).until(EC.presence_of_element_located(
         (By.XPATH, '//*[@id="page-iCRM Done Job Act"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[1]')))
 
 
@@ -120,13 +121,16 @@ def test_login(test_setup):
     except:
         pytest.fail(msg="Тест завершился с ошибкой. Блокировка не сработала",
                     pytrace=False)
-    time.sleep(5)
-    driver2.get(
-        "https://develop.icrm.liss.pro/app/icrm-deal/%D0%90%D0%9E%20%22%D0%93%D0%B0%D0%B7%D0%BF%D1%80%D0%BE%D0%BC%D0%BD%D0%B5%D1%84%D1%82%D1%8C-%D0%9D%D0%9D%D0%93%22%200140")
-    WebDriverWait(driver2, 10).until(
-        EC.element_to_be_clickable((By.XPATH, '//*[@id="page-iCRM Deal"]/div[1]/div/div/div[2]/div[3]/button[2]')))
-    driver2.find_element(By.XPATH, '//*[@id="page-iCRM Deal"]/div[1]/div/div/div[2]/div[3]/button[2]').click()
+    driver2.get(url="https://develop.icrm.liss.pro/app/icrm-deal/АО%20%22Газпромнефть-ННГ%22%200140")
     time.sleep(2)
+    driver2.find_element(By.XPATH, "//*[@id=\"page-iCRM Deal\"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[3]/div[3]/div/div[1]/form/div[1]/div/div[2]/div[1]/input").send_keys('test')
+    time.sleep(100)
+    try:
+        driver2.find_element(By.XPATH, "/html/body/div[6]/div/div/div[3]/div[2]/button[1]").click()
+
+    except:
+        pytest.fail(msg="Тест завершился с ошибкой. Предупреждающее окно не появилось.",
+                    pytrace=False)
     get_deal(driver1)
     passed = True
     try:
@@ -139,3 +143,4 @@ def test_login(test_setup):
     if not passed:
         pytest.fail(reason="Тест завершился с ошибкой. Разблокировка не сработала",
                     pytrace=False)
+# /html/body/div[6]/div/div/div[3]/div[2]/button[1]
