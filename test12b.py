@@ -124,11 +124,18 @@ def test_login(test_setup):
     driver2.get(url="https://develop.icrm.liss.pro/app/icrm-deal/АО%20%22Газпромнефть-ННГ%22%200140")
     time.sleep(2)
     driver2.find_element(By.XPATH, "//*[@id=\"page-iCRM Deal\"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[3]/div[3]/div/div[1]/form/div[1]/div/div[2]/div[1]/input").send_keys('test')
-    time.sleep(100)
-    try:
-        driver2.find_element(By.XPATH, "/html/body/div[6]/div/div/div[3]/div[2]/button[1]").click()
+    driver2.find_element(By.XPATH, "//*[@id=\"page-iCRM Deal\"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[3]/div[3]/div/div[1]/form/div[2]/div/div[2]/div[1]/input").click()
 
-    except:
+    time.sleep(100)
+    findWindow = True
+    for i in range(1, 20):
+        try:
+            driver2.find_element(By.XPATH, f"/html/body/div[{i}]/div/div/div[3]/div[2]/button[1]").click()
+            findWindow = False
+            break
+        except:
+            pass
+    if findWindow:
         pytest.fail(msg="Тест завершился с ошибкой. Предупреждающее окно не появилось.",
                     pytrace=False)
     get_deal(driver1)
