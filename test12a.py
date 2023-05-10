@@ -97,6 +97,15 @@ def checkLock(driver):
                         '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[2]/div[5]/div[2]/div/div/div[1]/div[3]/div[2]/button').click()
     assert WebDriverWait(driver, 5).until(EC.presence_of_element_located(
         (By.XPATH, '//*[@id="page-iCRM Done Job Act"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[1]')))
+    driver.get(
+        'https://develop.icrm.liss.pro/app/icrm-invoice/%D0%A1%D1%87%D0%B5%D1%82%20%E2%84%96685%20%D0%BE%D1%82%202023-05-10')
+    try:
+        WebDriverWait(driver, 3).until(EC.alert_is_present())
+        driver.switch_to.alert.accept()
+    except:
+        print('aaaaaaaaa')
+    WebDriverWait(driver, 5).until(EC.presence_of_element_located(
+        (By.XPATH, '//*[@id="page-iCRM Invoice"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[1]')))
 
 
 @pytest.fixture()
