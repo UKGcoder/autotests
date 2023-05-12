@@ -133,8 +133,6 @@ def test_login(test_setup):
 
     deal_changer.input_deal(driver=driver2)
     time.sleep(5)
-    driver2.get(
-        "https://develop.icrm.liss.pro/app/icrm-deal/%D0%90%D0%9E%20%22%D0%93%D0%B0%D0%B7%D0%BF%D1%80%D0%BE%D0%BC%D0%BD%D0%B5%D1%84%D1%82%D1%8C-%D0%9D%D0%9D%D0%93%22%200140")
     WebDriverWait(driver2, 10).until(
         EC.element_to_be_clickable((By.XPATH, '//*[@id="page-iCRM Deal"]/div[1]/div/div/div[2]/div[3]/button[2]')))
     driver2.find_element(By.XPATH, '//*[@id="page-iCRM Deal"]/div[1]/div/div/div[2]/div[3]/button[2]').click()
