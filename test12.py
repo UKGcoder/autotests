@@ -10,6 +10,7 @@ from bs4 import BeautifulSoup
 import undetected_chromedriver as uc
 from selenium.webdriver.chrome.service import Service
 from datetime import datetime
+import deal_changer
 
 Server = True
 
@@ -129,6 +130,8 @@ def test_login(test_setup):
     except:
         pytest.fail(msg="Тест завершился с ошибкой. Блокировка не сработала",
                     pytrace=False)
+
+    deal_changer.input_deal(driver=driver2)
     time.sleep(5)
     driver2.get(
         "https://develop.icrm.liss.pro/app/icrm-deal/%D0%90%D0%9E%20%22%D0%93%D0%B0%D0%B7%D0%BF%D1%80%D0%BE%D0%BC%D0%BD%D0%B5%D1%84%D1%82%D1%8C-%D0%9D%D0%9D%D0%93%22%200140")
@@ -148,3 +151,7 @@ def test_login(test_setup):
     if not passed:
         pytest.fail(reason="Тест завершился с ошибкой. Разблокировка не сработала",
                     pytrace=False)
+    if not deal_changer.check_changes(driver=driver1):
+        pytest.fail(reason="Тест завершился с ошибкой. Измененные данные не сохранились",
+                    pytrace=False)
+
