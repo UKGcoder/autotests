@@ -39,8 +39,8 @@ def login(username, password, driver):
     driver.find_element(By.XPATH, "//*[@id=\"login_password\"]").send_keys(password)
     driver.find_element(By.XPATH,
                         "//*[@id=\"page-login\"]/div/main/div[2]/div/section[1]/div/form/div[2]/button").click()
-    assert WebDriverWait(driver, 10).until(
-        EC.url_contains("app"))
+    time.sleep(2)
+    assert EC.url_contains("app")
 
 
 def lock_deal(driver: webdriver.Chrome):
