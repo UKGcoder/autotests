@@ -1,3 +1,5 @@
+import time
+
 import undetected_chromedriver as uc
 from selenium.common import TimeoutException, WebDriverException
 from selenium.webdriver.common.by import By
@@ -8,7 +10,7 @@ from datetime import datetime
 
 
 def inputField(xpath, driver: uc.Chrome, text):
-    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, xpath)))
+    time.sleep(2)
     field = driver.find_element(By.XPATH, xpath)
     field.clear()
     field.send_keys(text)
