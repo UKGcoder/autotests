@@ -32,14 +32,11 @@ def getDriver(isServer):
 
 
 def login(username, password, driver):
+    time.sleep(2)
     driver.find_element(By.XPATH, "//*[@id=\"login_email\"]").clear()
     driver.find_element(By.XPATH, "//*[@id=\"login_email\"]").send_keys(username)
     driver.find_element(By.XPATH, "//*[@id=\"login_password\"]").clear()
     driver.find_element(By.XPATH, "//*[@id=\"login_password\"]").send_keys(password)
-    WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located(
-            (By.XPATH, "//*[@id=\"page-login\"]/div/main/div[2]/div/section[1]/div/form/div[2]/button")))
-    # time.sleep(3)
     driver.find_element(By.XPATH,
                         "//*[@id=\"page-login\"]/div/main/div[2]/div/section[1]/div/form/div[2]/button").click()
     assert WebDriverWait(driver, 10).until(
