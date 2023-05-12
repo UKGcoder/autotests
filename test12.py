@@ -25,6 +25,7 @@ def getDriver(isServer):
         options.add_argument('--no-sandbox')  # # Bypass OS security model
         options.add_argument('start-maximized')
         options.add_argument("--disable-extensions")
+        options.add_argument('--disable-dev-shm-usage')
         driver = webdriver.Chrome(service=s, options=options)
     else:
         driver = uc.Chrome(options=options)
