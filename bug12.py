@@ -10,8 +10,19 @@ from bs4 import BeautifulSoup
 import undetected_chromedriver as uc
 from selenium.webdriver.chrome.service import Service
 from datetime import datetime
+import deal_changer
 
 Server = False
+#/html/body/div[3]/div/div/div[1]/div[2]/button[2]/svg/use - крестик хуйни
+
+
+def try_to_find(xpath, driver):
+    try:
+        driver.find_element(By.XPATH, xpath).click()
+        return False
+    except:
+        return True
+
 
 
 def getDriver(isServer):
@@ -37,6 +48,7 @@ def login(username, password, driver):
     driver.find_element(By.XPATH, "//*[@id=\"login_email\"]").send_keys(username)
     driver.find_element(By.XPATH, "//*[@id=\"login_password\"]").clear()
     driver.find_element(By.XPATH, "//*[@id=\"login_password\"]").send_keys(password)
+    # time.sleep(3)
     driver.find_element(By.XPATH,
                         "//*[@id=\"page-login\"]/div/main/div[2]/div/section[1]/div/form/div[2]/button").click()
     time.sleep(2)
@@ -76,7 +88,7 @@ def checkLock(driver):
                                                                    '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[2]/div[5]/div[2]/div/div/div[1]/div[1]/div[2]/button')))
     driver.find_element(By.XPATH,
                         '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[2]/div[5]/div[2]/div/div/div[1]/div[1]/div[2]/button').click()
-    assert WebDriverWait(driver, 5).until(EC.presence_of_element_located(
+    WebDriverWait(driver, 5).until(EC.presence_of_element_located(
         (By.XPATH, '//*[@id="page-iCRM Invoice"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[1]')))
 
     get_deal(driver)
@@ -84,7 +96,7 @@ def checkLock(driver):
                                                                '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[2]/div[5]/div[2]/div/div/div[1]/div[2]/div[2]/button')))
     driver.find_element(By.XPATH,
                         '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[2]/div[5]/div[2]/div/div/div[1]/div[2]/div[2]/button').click()
-    assert WebDriverWait(driver, 5).until(EC.presence_of_element_located(
+    WebDriverWait(driver, 5).until(EC.presence_of_element_located(
         (By.XPATH, '//*[@id="page-iCRM Task"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[1]')))
 
     get_deal(driver)
@@ -92,7 +104,7 @@ def checkLock(driver):
                                                                '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[2]/div[5]/div[2]/div/div/div[1]/div[3]/div[2]/button')))
     driver.find_element(By.XPATH,
                         '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[2]/div[5]/div[2]/div/div/div[1]/div[3]/div[2]/button').click()
-    assert WebDriverWait(driver, 5).until(EC.presence_of_element_located(
+    WebDriverWait(driver, 5).until(EC.presence_of_element_located(
         (By.XPATH, '//*[@id="page-iCRM Done Job Act"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[1]')))
     driver.get(
         'https://develop.icrm.liss.pro/app/icrm-invoice/%D0%A1%D1%87%D0%B5%D1%82%20%E2%84%96685%20%D0%BE%D1%82%202023-05-10')
@@ -122,38 +134,32 @@ def test_login(test_setup):
     login(username="testing@selenium.com", password="aksjhd2912t7sai7w", driver=driver2)
     login(username="secondtest@test.com", password="Khhkauds7gka8g3qo21", driver=driver1)
     lock_deal(driver=driver2)
-    try:
-        checkLock(driver=driver1)
-    except:
-        pytest.fail(msg="Тест завершился с ошибкой. Блокировка не сработала",
-                    pytrace=False)
+
     driver2.get(url="https://develop.icrm.liss.pro/app/icrm-deal/АО%20%22Газпромнефть-ННГ%22%200140")
+
+    time.sleep(1.5)
+    driver2.find_element(By.XPATH, "//*[@id=\"page-iCRM Deal\"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[3]/div[5]/div/div/form/div[1]/div[3]/div/div[1]/button[4]").click()
+
+    inputs = driver2.find_elements(By.CLASS_NAME, "input-with-feedback form-control input-sm")
+    print(len(inputs))
+    ind = 0
+    # while try_to_find("/html/body/div[3]/div/div/div[1]/div[2]/button[2]/svg/use", driver=driver2) or ind < 20:
+    #     inputs.send_keys(Keys.TAB)
+    #     ind += 1
+
+    total_inputs = len(inputs)
+
+
+
+    WebDriverWait(driver2, 10).until(
+        EC.element_to_be_clickable((By.XPATH, '//*[@id="page-iCRM Deal"]/div[1]/div/div/div[2]/div[3]/button[2]')))
+    driver2.find_element(By.XPATH, '//*[@id="page-iCRM Deal"]/div[1]/div/div/div[2]/div[3]/button[2]').click()
     time.sleep(2)
-    driver2.find_element(By.XPATH, "//*[@id=\"page-iCRM Deal\"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[3]/div[3]/div/div[1]/form/div[1]/div/div[2]/div[1]/input").send_keys('test')
-    driver2.find_element(By.XPATH, "//*[@id=\"page-iCRM Deal\"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[3]/div[3]/div/div[1]/form/div[2]/div/div[2]/div[1]/input").click()
-
-    time.sleep(100)
-    findWindow = True
-    for i in range(1, 20):
-        try:
-            driver2.find_element(By.XPATH, f"/html/body/div[{i}]/div/div/div[3]/div[2]/button[1]").click()
-            findWindow = False
-            break
-        except:
-            pass
-
-    if findWindow:
-        pytest.fail(msg="Тест завершился с ошибкой. Предупреждающее окно не появилось.",
-                    pytrace=False)
     get_deal(driver1)
-    passed = True
-    try:
-        WebDriverWait(driver1, 10).until(EC.presence_of_element_located((By.XPATH,
-                                                                         '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[1]/div[1]')))
-        checkLock(driver=driver1)
-        passed = False
-    except:
-        pass
-    if not passed:
-        pytest.fail(reason="Тест завершился с ошибкой. Разблокировка не сработала",
+    inputs2 = driver1.find_elements(By., "input-with-feedback form-control input-sm")
+    total_inputs2 = len(inputs2)
+
+    if total_inputs != total_inputs2:
+        pytest.fail(reason="Тест завершился с ошибкой. Данные сохранились с ошибкой",
                     pytrace=False)
+

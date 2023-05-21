@@ -29,6 +29,10 @@ def test_setup():
 
 
 def test_login(test_setup):
+    # driver = webdriver.Chrome(service=s, options=options)
+
+    # login_email
+    driver.get(url="https://develop.icrm.liss.pro/#login")
     start_time = datetime.now()
     driver.find_element(By.XPATH, "//*[@id=\"login_email\"]").clear()
     driver.find_element(By.XPATH, "//*[@id=\"login_email\"]").send_keys("testing@selenium.com")
