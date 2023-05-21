@@ -13,7 +13,9 @@ from datetime import datetime
 import deal_changer
 
 Server = False
-#/html/body/div[3]/div/div/div[1]/div[2]/button[2]/svg/use - крестик хуйни
+
+
+# /html/body/div[3]/div/div/div[1]/div[2]/button[2]/svg/use - крестик хуйни
 
 
 def try_to_find(xpath, driver):
@@ -22,7 +24,6 @@ def try_to_find(xpath, driver):
         return False
     except:
         return True
-
 
 
 def getDriver(isServer):
@@ -135,31 +136,40 @@ def test_login(test_setup):
     login(username="secondtest@test.com", password="Khhkauds7gka8g3qo21", driver=driver1)
     lock_deal(driver=driver2)
 
-    driver2.get(url="https://develop.icrm.liss.pro/app/icrm-deal/АО%20%22Газпромнефть-ННГ%22%200140")
+    get_deal(driver=driver2)
 
     time.sleep(1.5)
-    driver2.find_element(By.XPATH, "//*[@id=\"page-iCRM Deal\"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[3]/div[5]/div/div/form/div[1]/div[3]/div/div[1]/button[4]").click()
+    cl = driver2.find_element(By.XPATH,
+                         "//*[@id=\"page-iCRM Deal\"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[3]/div[5]/div/div/form/div[1]/div[3]/div/div[1]/button[4]")
+    cl.click()
+    time.sleep(2)
 
-    inputs = driver2.find_elements(By.CLASS_NAME, "input-with-feedback form-control input-sm")
-    print(len(inputs))
+    driver2.find_element(By.XPATH, '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[3]/div[5]/div/div/form/div[1]/div[2]/div[2]/div[1]/div/div').click()
+    inputs = driver2.find_element(By.XPATH,
+                                  '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[3]/div[5]/div/div/form/div[1]/div[2]/div[2]/div[1]/div/div/div[2]/div[1]/div/div/div/input')
+
+
     ind = 0
-    # while try_to_find("/html/body/div[3]/div/div/div[1]/div[2]/button[2]/svg/use", driver=driver2) or ind < 20:
-    #     inputs.send_keys(Keys.TAB)
-    #     ind += 1
-
-    total_inputs = len(inputs)
-
-
+    while try_to_find("/html/body/div[3]/div/div/div[1]/div[2]/button[2]/svg/use", driver=driver2) or ind < 5:
+        inputs.send_keys(Keys.TAB)
+        ind += 1
+        time.sleep(1)
 
     WebDriverWait(driver2, 10).until(
         EC.element_to_be_clickable((By.XPATH, '//*[@id="page-iCRM Deal"]/div[1]/div/div/div[2]/div[3]/button[2]')))
     driver2.find_element(By.XPATH, '//*[@id="page-iCRM Deal"]/div[1]/div/div/div[2]/div[3]/button[2]').click()
     time.sleep(2)
     get_deal(driver1)
-    inputs2 = driver1.find_elements(By., "input-with-feedback form-control input-sm")
-    total_inputs2 = len(inputs2)
-
-    if total_inputs != total_inputs2:
+    try:
+        driver1.find_element(By.XPATH,
+                             '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[3]/div[5]/div/div/form/div[1]/div[2]/div[2]/div[1]/div/div/div[2]/div[1]/div/div/div/input')
         pytest.fail(reason="Тест завершился с ошибкой. Данные сохранились с ошибкой",
                     pytrace=False)
-
+    except:
+        pass
+    try:
+        driver1.find_element(By.XPATH, '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[3]/div[5]/div/div/form/div[1]/div[2]/div[1]/div/div/div[1]/input').click()
+        driver1.find_element(By.XPATH, '//*[@id="page-iCRM Deal"]/div[2]/div[2]/div/div[3]/div[2]/div[1]/div[2]/div/div/div[3]/div[5]/div/div/form/div[1]/div[3]/div/div[1]/button[1]').click()
+        driver2.find_element(By.XPATH, '//*[@id="page-iCRM Deal"]/div[1]/div/div/div[2]/div[3]/button[2]').click()
+    except:
+        pass
